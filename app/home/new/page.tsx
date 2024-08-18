@@ -1,31 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function NewPoster() {
+export default function NewPosterPage() {
+  const [userName, setUserName] = useState<string | null>(null);
   const [tag, setTag] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [boardId, setBoardId] = useState('');
-  const [boardName, setBoardName] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+      setUserName(savedName);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch('/api/posters', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ tag, title, content, boardId, boardName }),
-    });
+    if (userName) {
+      const response = await fetch('/api/posters', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tag, title, content, boardId, author: userName }),
+      });
 
-    if (res.ok) {
-      router.push('/');
+      if (response.ok) {
+        router.push('/');
+        console.log('Poster created successfully');
+      } else {
+        console.error('Failed to create poster');
+      }
     } else {
-      console.error('Failed to create poster');
+      console.error('Username not found in localStorage');
     }
   };
 
@@ -44,12 +56,8 @@ export default function NewPoster() {
         <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
       </div>
       <div>
-        <label>Board ID (Optional):</label>
-        <input type="number" value={boardId} onChange={(e) => setBoardId(e.target.value)} />
-      </div>
-      <div>
-        <label>Board Name (If no ID):</label>
-        <input type="text" value={boardName} onChange={(e) => setBoardName(e.target.value)} />
+        <label>Board ID:</label>
+        <input type="number" value={boardId} onChange={(e) => setBoardId(e.target.value)} required />
       </div>
       <button type="submit">Create Poster</button>
     </form>

@@ -19,8 +19,10 @@ model Poster {
   title String @db.Text
   content String @db.VarChar(300)
   CreatedAt DateTime @default(now())
+  author String? @default("ななし")
   boardName Board @relation(fields:[boardId], references:[id])
-  boardId Int 
+  boardId Int
+
 }
 
 model Board {
