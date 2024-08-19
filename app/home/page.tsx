@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import NamePopup from '@/app/components/popup';
+import Poster from '@/app/components/poster';
+import New from '@/app/components/new';
 
 
 interface Poster {
@@ -63,25 +65,23 @@ export default function MainPage() {
     <>
     <div>
       {isPopupVisible && <NamePopup onSubmit={handleNameSubmit} />}
-      {userName ? <h1>Welcome, {userName}!</h1> : <p>Please enter your name.</p>}
     </div>
         <div>
-          <h1>Boards</h1>
           {boards.map((board) => (
             <div key={board.id}>
-              <h2>{board.name}</h2>
               <ul>
+              <li key={board.id}>
                 {board.contents.map((poster) => (
-                  <li key={poster.id}>
-                    <h3>{poster.title}</h3>
-                    <p>{poster.content}</p>
-                    <p><strong>Author:</strong> {poster.author}</p>
-                  </li>
+                    <Poster key={poster.id} tag={poster.tag} name={poster.author} text={poster.content} />
                 ))}
+                </li>
               </ul>
             </div>
           ))}
         </div>
+        <a href="/home/new">
+            <New />
+        </a>
         </>
       );
 }

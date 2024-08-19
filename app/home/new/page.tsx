@@ -31,7 +31,7 @@ export default function NewPosterPage() {
       });
 
       if (response.ok) {
-        router.push('/');
+        router.push('/home');
         console.log('Poster created successfully');
       } else {
         console.error('Failed to create poster');
