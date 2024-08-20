@@ -8,8 +8,9 @@ interface PosterProps {
     text: string;
 }
 
-
 export default function Poster({tag, name, text}: PosterProps) {
+    
+    
     return (
     <div className="m-2 p-2 bg-white">
         <Tag tag={tag} />

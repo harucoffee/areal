@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Header from '@/app/components/header';
 
 export default function NewPosterPage() {
   const [userName, setUserName] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export default function NewPosterPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ tag, title, content, boardId, author: userName }),
+        body: JSON.stringify({ tag, title, content, boardId: 1, author: userName }),
       });
 
       if (response.ok) {
@@ -42,24 +43,24 @@ export default function NewPosterPage() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <>
+    <Header />
+    <form className="flex flex-col items-center justify-center" onSubmit={handleSubmit}>
+      <div className="m-2">
         <label>Tag:</label>
-        <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} required />
+        <input className="border-2 border-gray-300 rounded-md p-2" type="text" value={tag} onChange={(e) => setTag(e.target.value)} required />
       </div>
-      <div>
+      <div className="m-2">
         <label>Title:</label>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <input className="border-2 border-gray-300 rounded-md p-2" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
       </div>
-      <div>
+      <div className="flex flex-col m-2">
         <label>Content:</label>
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
+        <textarea className="border-2 border-gray-300 rounded-md p-2 w-full h-40" value={content} onChange={(e) => setContent(e.target.value)} required />
       </div>
-      <div>
-        <label>Board ID:</label>
-        <input type="number" value={boardId} onChange={(e) => setBoardId(e.target.value)} required />
-      </div>
-      <button type="submit">Create Poster</button>
+     
+        <button className="bg-blue-500 text-white rounded-md p-2" type="submit">Create Poster</button>
     </form>
+    </>
   );
 }
