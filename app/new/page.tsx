@@ -32,7 +32,7 @@ export default function NewPosterPage() {
       });
 
       if (response.ok) {
-        router.push('/home');
+        router.push('/');
         console.log('Poster created successfully');
       } else {
         console.error('Failed to create poster');
